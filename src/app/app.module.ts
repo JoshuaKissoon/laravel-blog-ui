@@ -23,13 +23,14 @@ import { HomeComponent } from './home/home.component';
 import { UserLoginComponent } from './user/login.component';
 
 import { PostsViewAllComponent } from './post/postsViewAll.component';
+import { PostAddComponent } from './post/postAdd.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         HomeComponent,
         UserLoginComponent,
-        PostsViewAllComponent,
+        PostsViewAllComponent, PostAddComponent, 
     ],
     imports: [BrowserModule, FormsModule, HttpModule, RoutingProvider, GrowlModule],
     providers: [Config, AuthGuard, DataManager, AuthService, AlertService],

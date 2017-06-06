@@ -9,4 +9,7 @@ const routes: Routes = [
     { path: 'user/login', component: UserLoginComponent }
 ];
 
+import { PostAddComponent } from './post/postAdd.component';
+routes.push({ path: 'post/create', component: PostAddComponent });
+
 export const RoutingProvider = RouterModule.forRoot(routes, { useHash: true });
