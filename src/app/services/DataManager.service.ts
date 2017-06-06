@@ -27,6 +27,16 @@ export class DataManager
     {
         return this.config.getBaseUrl();
     }
+    
+    getDefaultHeaders()
+    {
+        const headers = new Headers({
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.getAccessToken(),
+        });
+        
+        return headers;        
+    }
 
     /**
      * Callback wrapper for the HTTP GET Call
@@ -38,13 +48,9 @@ export class DataManager
      */
     GET(urlq: string)
     {
-        const headers = new Headers({
-            'Content-Type': 'application/json',
-            'accessToken': this.getAccessToken(),
-        });
 
         return this.http
-            .get(this.getBaseUrl() + urlq, { headers: headers, body: '' })
+            .get(this.getBaseUrl() + urlq, { headers: this.getDefaultHeaders(), body: '' })
             .toPromise()
             .then(res => res.json())
             .then(res =>
@@ -69,18 +75,13 @@ export class DataManager
      */
     POST(urlq: string, object: any)
     {
-        const headers = new Headers({
-            'Content-Type': 'application/json',
-            'accessToken': this.getAccessToken(),
-        });
-
         if (null == object)
         {
             object = { "blank": "blank" };
         }
 
         return this.http
-            .post(this.getBaseUrl() + urlq, JSON.stringify(object), { headers: headers })
+            .post(this.getBaseUrl() + urlq, JSON.stringify(object), { headers: this.getDefaultHeaders() })
             .toPromise()
             .then(res => res.json())
             .then(res =>
@@ -106,7 +107,7 @@ export class DataManager
     POSTRAW(urlq: string, object: any)
     {
         const headers = new Headers({
-            'accessToken': this.getAccessToken(),
+            'Authorization': 'Bearer ' + this.getAccessToken(),
         });
 
         return this.http
@@ -136,18 +137,13 @@ export class DataManager
      */
     PUT(urlq: string, object: any)
     {
-        const headers = new Headers({
-            'Content-Type': 'application/json',
-            'accessToken': this.getAccessToken(),
-        });
-
         if (null == object)
         {
             object = { "blank": "blank" };
         }
 
         return this.http
-            .put(this.getBaseUrl() + urlq, JSON.stringify(object), { headers: headers })
+            .put(this.getBaseUrl() + urlq, JSON.stringify(object), { headers: this.getDefaultHeaders() })
             .toPromise()
             .then(res => res.json())
             .then(res =>
@@ -172,18 +168,13 @@ export class DataManager
      */
     PATCH(urlq: string, object: any)
     {
-        const headers = new Headers({
-            'Content-Type': 'application/json',
-            'accessToken': this.getAccessToken(),
-        });
-
         if (null == object)
         {
             object = { "blank": "blank" };
         }
 
         return this.http
-            .patch(this.getBaseUrl() + urlq, JSON.stringify(object), { headers: headers })
+            .patch(this.getBaseUrl() + urlq, JSON.stringify(object), { headers: this.getDefaultHeaders() })
             .toPromise()
             .then(res => res.json())
             .then(res =>
@@ -207,14 +198,8 @@ export class DataManager
      */
     DELETE(urlq: string)
     {
-
-        const headers = new Headers({
-            'Content-Type': 'application/json',
-            'accessToken': this.getAccessToken(),
-        });
-
         return this.http
-            .delete(this.getBaseUrl() + urlq, { headers: headers, body: '' })
+            .delete(this.getBaseUrl() + urlq, { headers: this.getDefaultHeaders(), body: '' })
             .toPromise()
             .then(res => res.json())
             .then(res =>

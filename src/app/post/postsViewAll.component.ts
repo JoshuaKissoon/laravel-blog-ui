@@ -22,7 +22,7 @@ export class PostsViewAllComponent implements OnInit
 
     private loadPosts()
     {
-        this.dataman.GET("posts").then(
+        this.dataman.GET("api/posts").then(
             res =>
             {
                 this.posts = res;

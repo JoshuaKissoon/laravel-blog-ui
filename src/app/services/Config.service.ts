@@ -20,7 +20,7 @@ export class Config
         }
         else
         {
-            return "http://localhost:8000/api/";
+            return "http://localhost:8000/";
         }
     }
 }
