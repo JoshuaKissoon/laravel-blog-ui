@@ -22,11 +22,14 @@ import { AlertService } from './services/AlertService.service';
 import { HomeComponent } from './home/home.component';
 import { UserLoginComponent } from './user/login.component';
 
+import { PostsViewAllComponent } from './post/postsViewAll.component';
+
 @NgModule({
     declarations: [
-        AppComponent, 
-        HomeComponent, 
-        UserLoginComponent, 
+        AppComponent,
+        HomeComponent,
+        UserLoginComponent,
+        PostsViewAllComponent,
     ],
     imports: [BrowserModule, FormsModule, HttpModule, RoutingProvider, GrowlModule],
     providers: [Config, AuthGuard, DataManager, AuthService, AlertService],

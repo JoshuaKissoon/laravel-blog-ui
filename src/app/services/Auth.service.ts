@@ -53,8 +53,8 @@ export class AuthService
 
     getAccessToken(): string
     {
-        var expiration = this.getExpiration();
-        var token = this.getAccessToken();
+        var expiration = localStorage.getItem(AuthService.ACCESS_TOKEN_EXPIRATION_KEY);
+        var token = localStorage.getItem(AuthService.ACCESS_TOKEN_EXPIRATION_KEY);
 
         if (!token || !expiration)
         {
