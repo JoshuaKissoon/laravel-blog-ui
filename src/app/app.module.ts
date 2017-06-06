@@ -7,6 +7,8 @@ import { enableProdMode } from '@angular/core';
 
 enableProdMode();
 
+import { GrowlModule } from 'primeng/primeng';
+
 import { AppComponent } from './app.component';
 
 import { RoutingProvider } from './app.routes';
@@ -26,7 +28,7 @@ import { UserLoginComponent } from './user/login.component';
         HomeComponent, 
         UserLoginComponent, 
     ],
-    imports: [BrowserModule, FormsModule, HttpModule, RoutingProvider],
+    imports: [BrowserModule, FormsModule, HttpModule, RoutingProvider, GrowlModule],
     providers: [Config, AuthGuard, DataManager, AuthService, AlertService],
     bootstrap: [AppComponent]
 })

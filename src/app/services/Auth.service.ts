@@ -11,67 +11,80 @@ import { User } from '../user/User.model';
 @Injectable()
 export class AuthService
 {
-    protected accessToken: string;
-    protected loggedIn = false;
+    public static ACCESS_TOKEN_KEY = "access_token";
+    public static REFRESH_TOKEN_KEY = "refresh_token";
+    public static ACCESS_TOKEN_EXPIRATION_KEY = "access_token_expiration";
+    public static USER_KEY = "user_store";
+
     protected user = new User();
 
-    public constructor()
+    authenticate(data: any)
     {
-        this.accessToken = localStorage.getItem(this.getAccessTokenKey());
-        this.loggedIn = !!this.accessToken;
-    }
-    
-    getAccessTokenKey()
-    {
-        return "authService_accessToken";
-    }
-    
-    getUserKey()
-    {
-        return "authService_user";
-    }
-
-    login(iuser: User, iaccessToken: string)
-    {
-        this.accessToken = iaccessToken;
-        localStorage.setItem(this.getAccessTokenKey(), iaccessToken);
-        localStorage.setItem(this.getUserKey(), JSON.stringify(iuser));
-        this.loggedIn = true;
-        this.user = iuser;
+        localStorage.setItem(AuthService.ACCESS_TOKEN_KEY, data.access_token);
+        localStorage.setItem(AuthService.REFRESH_TOKEN_KEY, data.refresh_token);
+        localStorage.setItem(AuthService.ACCESS_TOKEN_EXPIRATION_KEY, data.expires_in + Date.now());
     }
 
     getUser(): User
     {
-        var _data = JSON.parse(localStorage.getItem(this.getUserKey()));
-        
+        var _data = JSON.parse(localStorage.getItem(AuthService.REFRESH_TOKEN_KEY));
+
         if (_data == null)
         {
             return new User();
         }
-        
+
         this.user = new User();
         this.user.loadFromMap(_data);
         return this.user;
     }
 
-    isLoggedIn(): boolean
+    isAuthenticated(): boolean
     {
-        this.accessToken = localStorage.getItem(this.getAccessTokenKey());
-        this.loggedIn = !!this.accessToken;
-
-        return this.loggedIn;
+        if (this.getAccessToken())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     getAccessToken(): string
     {
-        this.accessToken = localStorage.getItem(this.getAccessTokenKey());
-        return this.accessToken;
+        var expiration = this.getExpiration();
+        var token = this.getAccessToken();
+
+        if (!token || !expiration)
+        {
+            return null;
+        }
+
+        if (Date.now() > parseInt(expiration))
+        {
+            this.destroyToken();
+            return null;
+        }
+
+        return token;
+    }
+
+    getExpiration(): string
+    {
+        return localStorage.getItem(AuthService.ACCESS_TOKEN_EXPIRATION_KEY);
+    }
+
+    private destroyToken()
+    {
+        localStorage.removeItem(AuthService.ACCESS_TOKEN_KEY);
+        localStorage.removeItem(AuthService.REFRESH_TOKEN_KEY);
+        localStorage.removeItem(AuthService.ACCESS_TOKEN_EXPIRATION_KEY);
+        localStorage.removeItem(AuthService.USER_KEY);
     }
 
     signOut()
     {
-        localStorage.removeItem(this.getAccessTokenKey());
-        localStorage.removeItem(this.getUserKey());
-        this.loggedIn = false;
+        this.destroyToken();
     }
 }
