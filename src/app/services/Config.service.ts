@@ -20,7 +20,7 @@ export class Config
         }
         else
         {
-            return "http://localhost/fixitapi/?urlq=";
+            return "http://localhost:8000/";
         }
     }
 }
